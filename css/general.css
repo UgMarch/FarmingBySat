@@ -1,0 +1,28 @@
+*
+{
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    background-color: #CEECFF;
+}
+
+header
+{
+    background-color: red;
+    text-align: center;
+    height: 15%;
+}
+
+.imgLogo
+{
+    position: relative;
+    display: block;
+    margin: 1% auto 1% auto;
+    text-align: center;
+    height:25%;
+    width: auto;
+}
