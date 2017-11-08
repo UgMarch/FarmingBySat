@@ -1,6 +1,6 @@
 *
 {
-    font-family: calibri;
+    font-family: "calibri";
     position: relative;
     margin: 0;
     padding: 0;
@@ -13,11 +13,11 @@ body
     background-size: cover;
 }
 
-header
+h1
 {
-    color:brown;
+    color: brown;
     text-align: center;
-    height: 15%;
+    font-size: 48;
 }
 
 .imgLogo
@@ -26,6 +26,7 @@ header
     display: block;
     margin: 1% auto 1% auto;
     text-align: center;
-    height:25%;
+    height:20%;
     width: auto;
 }
+
