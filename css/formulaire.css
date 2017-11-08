@@ -22,3 +22,13 @@ input
     margin: 1vh 2vh 1vh 2vh;
     padding: 2vh;
 }
+
+#validateur
+{
+    display: block;
+    position: relative;
+    color: white;
+    background-color: brown;
+    margin-left: auto;
+    margin-right: auto;
+}
