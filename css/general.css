@@ -1,5 +1,6 @@
 *
 {
+    font-family: calibri;
     position: relative;
     margin: 0;
     padding: 0;
@@ -27,27 +28,4 @@ header
     text-align: center;
     height:25%;
     width: auto;
-}
-
-#firstStep
-{
-    display: block;
-    margin: 3% 3% 3% 8%;
-    padding: 2%;
-    height: auto;
-    width: 70vh;
-    background-color: rgba(255,255,255,0.8);
-    box-shadow: 0 0 16px grey;
-    border-radius: 5px;
-}
-
-input
-{
-    display: inline-block;
-    font-size: 2vh;
-    border-radius: 5px;
-    height: auto;
-    width: inherit;
-    background-color: rgba(128,128,128,0.3);
-    border: none;
 }
