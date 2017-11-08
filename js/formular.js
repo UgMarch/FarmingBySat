@@ -1,4 +1,5 @@
-function secondStep(){
+function goSecondStep(){
+
   var name = document.getElementById("name").value;
   var firstname = document.getElementById("firstname").value;
   var number = document.getElementById("phone").value;
@@ -6,6 +7,7 @@ function secondStep(){
   var postalCode = document.getElementById("postalCode").value;
   var city = document.getElementById("city").value;
   var mail = document.getElementById("mail").value;
+
   if(name.length >= 2 && name.length <= 20){
     if(firstname.length >= 2 && firstname.length <= 20){
       if(number.length == 10 && isNaN(number) == false){
