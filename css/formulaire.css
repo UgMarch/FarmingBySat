@@ -2,21 +2,22 @@
 {
     display:inline-block;
     position: relative;
-    margin: 2% 3% 2% 8%;
-    padding: 1.7%;
-    height: auto;
+    margin: 2% 4% 2% auto;
+    padding: 2%;
+    height: 48vh;
     width: 70vh;
     box-shadow: 0 0 16px grey;
     border-radius: 5px;
     background-color: rgba(255,255,255,0.8);
+    float: right; 
 }
 
 #firstStep
 {
     display: inline-block;
-    margin: 2% 3% 2% 8%;
-    padding: 1.7%;
-    height: auto;
+    margin: 2% auto 2% 4%;
+    padding: 2%;
+    height: 48vh;
     width: 70vh;
     background-color: rgba(255,255,255,0.8);
     box-shadow: 0 0 16px grey;
@@ -45,4 +46,36 @@ input
     background-color: brown;
     margin-left: auto;
     margin-right: auto;
+}
+
+@media screen and (max-width: 1040px)
+{
+    .imgExplications
+    {
+        margin: 0 1.5% 0 auto;
+    }
+    
+    #firststep
+    {
+        margin: 0 auto 0 1.5%;
+    }
+}
+
+@media screen and (max-width: 950px)
+{
+    .imgExplications
+    {
+        position: relative;
+        display: block;
+        float: none;
+        margin: 1% auto 1% auto;
+    }
+    
+    #firststep
+    {
+        position: relative;
+        display: block;
+        float: none;
+        margin: 1% auto 1% auto;
+    }
 }
