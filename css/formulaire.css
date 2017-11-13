@@ -52,12 +52,12 @@ input
 {
     .imgExplications
     {
-        margin: 0 1.5% 0 auto;
+        margin: 2% 1.5% 2% auto;
     }
     
     #firststep
     {
-        margin: 0 auto 0 1.5%;
+        margin: 2% auto 2% 1.5%;
     }
 }
 
@@ -68,7 +68,7 @@ input
         position: relative;
         display: block;
         float: none;
-        margin: 1% auto 1% auto;
+        margin: 2% auto 2% auto;
     }
     
     #firststep
@@ -76,6 +76,6 @@ input
         position: relative;
         display: block;
         float: none;
-        margin: 1% auto 1% auto;
+        margin: 2% auto 2% auto;
     }
 }
