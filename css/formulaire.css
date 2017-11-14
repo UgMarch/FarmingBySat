@@ -9,7 +9,7 @@
     box-shadow: 0 0 16px grey;
     border-radius: 5px;
     background-color: rgba(255,255,255,0.8);
-    float: right; 
+    float: right;
 }
 
 #firstStep
@@ -25,7 +25,66 @@
     float: left;
 }
 
+#secondStep
+{
+    display: none;
+    background-color: rgba(255,255,255,0.8);
+    box-shadow: 0 0 16px grey;
+    border-radius: 5px;
+    position: relative;
+    margin: 1% auto 1% auto;
+    text-align: center;
+    width: 120vh;
+}
+
+#secondStepMap
+{
+    display: none;
+    height: 78vh;
+    width: 120vh;
+    background-color: rgba(255,255,255,0.8);
+    box-shadow: 0 0 16px grey;
+    border-radius: 5px;
+    position: relative;
+    margin: 1% auto 1% auto;
+    text-align: center;
+}
+
+#secondStepText
+{
+    display: none;
+    padding-bottom: 1%;
+}
+
+#thirdStep
+{
+    display: none;
+    margin: 2% auto 2% 4%;
+    padding: 2%;
+    height: 48vh;
+    width: 70vh;
+    background-color: rgba(255,255,255,0.8);
+    box-shadow: 0 0 16px grey;
+    border-radius: 5px;
+    position: relative;
+    margin: 1% auto 1% auto;
+    text-align: center;
+}
+
 input
+{
+    display: inline-block;
+    font-size: 2vh;
+    border-radius: 1vh;
+    height: auto;
+    width: 30vh;
+    background-color: rgba(128,128,128,0.3);
+    border: none;
+    margin: 1vh 2vh 1vh 2vh;
+    padding: 2vh;
+}
+
+select
 {
     display: inline-block;
     font-size: 2vh;
@@ -48,13 +107,23 @@ input
     margin-right: auto;
 }
 
+#pac
+{
+    display: block;
+    position: relative;
+    color: white;
+    background-color: brown;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 @media screen and (max-width: 1040px)
 {
     .imgExplications
     {
         margin: 2% 1.5% 2% auto;
     }
-    
+
     #firststep
     {
         margin: 2% auto 2% 1.5%;
@@ -70,7 +139,7 @@ input
         float: none;
         margin: 2% auto 2% auto;
     }
-    
+
     #firststep
     {
         position: relative;

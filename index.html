@@ -1,18 +1,21 @@
 <head>
     <title>Mon copain le satellite</title>
     <meta charset="utf-8"></meta>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?signed_in=true"></script>
     <link rel="stylesheet" type="text/css" href="css/general.css"/>
     <link rel="stylesheet" type="text/css" href="css/formulaire.css"/>
     <script src="js/formular.js"></script>
 </head>
-<body>
+<body onload="hideElements()">
     <header class="enTete">
         <h1>Vos couverts végétaux</h1>
     </header>
     <!-- Retirage du logo demandé par Alexanda, Charlotte et Valentin #cestpasmoi
     <img class="imgLogo" src="images/logo.png"/>
     -->
-    <img class="imgExplications" src="images/explications.jpg"/>
+    <img id="explainImages" class="imgExplications" src="images/explications.jpg"/>
+
     <div id="firstStep">
         <h2>INSCRIVEZ-VOUS</h2>
       <p>
@@ -34,7 +37,39 @@
         <input type="button" value="Suivant" onclick="goSecondStep()" id="validateur"/>
       </p>
     </div>
+
     <div id="secondStep">
+      <div id="secondStepMap">
+      </div>
+      <div id="secondStepText">
+        <h3>
+          Cliquez sur la carte pour disposer deux balises, de manière à ce que vos parcelles se trouvent dans un rectangle.
+        </h3>
+      </div>
+    </div>
+
+    <div id="thirdStep">
+      <h2>INFORMATIONS GENERALES SUR VOS PARCELLES</h2>
+    </br>
+      <p>
+        <input type="text" placeholder="Nombre d'h2 total" id="nbH2" />
+      </p>
+      <select>
+        <option>
+          Zones Vulnérables
+        </option>
+        <option>
+          Zones Protégées
+        </option>
+        <option>
+          Nature 2000
+        </option>
+      </select>
+      <p></p>
+      <input id="pac" type="file" />
+    </div>
+
+    <div id="fourthStep">
 
     </div>
 </body>
