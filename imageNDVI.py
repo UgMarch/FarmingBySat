@@ -1,3 +1,6 @@
+""" Script python permettant de réaliser une carte NDVI à partir de 2 images jp2
+de types B4 et B8. Il faut lui passer l'url de ces deux cartes en paramètres,
+et il retourne à la racine un fichier ndvi.tif """
 import os, rasterio
 import matplotlib.pyplot as plt
 import numpy as np
