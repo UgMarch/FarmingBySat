@@ -1,7 +1,9 @@
 // Often necessary modules for server
 var http = require('http');
 var fs = require('fs');
+var path = require('path');
 var express = require('express');
+var formidable = require('formidable');
 var app = express();
 
 // Names to send to the NDVI python script
@@ -31,8 +33,10 @@ app.post('/upload', function(req, res){
   // specify that we want to allow the user to upload multiple files in a single request
   form.multiples = true;
 
+  var dir = "/Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2] + "/";
+
   // store all uploads in the /uploads directory
-  form.uploadDir = path.join(__dirname, '/uploads');
+  form.uploadDir = path.join(__dirname, dir);
 
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
@@ -51,7 +55,6 @@ app.post('/upload', function(req, res){
   });
 
   // parse the incoming request containing the form data
-  console.log(form.parse(req));
   form.parse(req);
 
 });
