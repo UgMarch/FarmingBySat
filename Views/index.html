@@ -55,20 +55,20 @@
       <h2>INFORMATIONS GENERALES SUR VOS PARCELLES</h2>
     </br>
       <p>
-        <input type="text" placeholder="Nombre d'h2 total" id="nbH2" />
+        <input type="text" placeholder="Nombre d'hectares total" id="nbH2" />
       </p>
-      <select>
-        <option>
-          Zones Vulnérables
-        </option>
-        <option>
-          Zones Protégées
-        </option>
-        <option>
-          Nature 2000
-        </option>
-      </select>
-      <p></p>
+      <p>
+        <input id="zoneVulnerable" type="checkbox"/>
+        <label for="zoneVulnerable">Zones Vulnérables</label>
+      </p>
+      <p>
+          <input id="zoneProtegee" type="checkbox"/>
+          <label for="zoneProtegee">Zones Protégées</label>
+      </p>
+      <p>
+          <input id="natura2000" type="checkbox"/>
+          <label for="natura2000">Natura 2000</label>
+      </p>
       <input id="pac" type="file" />
     </div>
 
