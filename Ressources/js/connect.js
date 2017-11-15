@@ -8,6 +8,10 @@ $('#poke').click(function () {
   socket.emit('message', 'Salut Serveur, ça va?');
 });
 
+function sendUserData(){
+  socket.emit('message', 'User Receive!');
+}
+
 function extract() {
   socket.emit('extractFile', "Copernicus sends us some datas");
 }
