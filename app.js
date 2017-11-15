@@ -1,23 +1,28 @@
+// Often necessary modules for server
 var http = require('http');
 var fs = require('fs');
 var express = require('express');
 var app = express();
+
+// Names to send to the NDVI python script
 var name4;
 var name8;
 
-var firstName;
-var lastName;
+// New user Datas to store
+var userDatas;
 
-// app.js
-
+// Creation of the server
 var server = require('http').createServer(app);
 
+// Init of express, to point our Ressources
 app.use(express.static(__dirname + '/Ressources/'));
 
+// Define the view, so index.html
 app.get('/', function(req, res,next) {
     res.sendFile(__dirname + '/Views/index.html');
 });
 
+// Event to handle uploads files
 app.post('/upload', function(req, res){
 
   // create an incoming form object
@@ -57,12 +62,22 @@ var io = require('socket.io').listen(server);
 /* Begin of synchronous listening of server */
 io.sockets.on('connection', function (socket) {
 
+    // Send a temp message to the client
     socket.emit('message', 'Vous êtes bien connecté ! ');
 
+    // Alert the server
     console.log("Un client s'est connecté");
 
+    // Receive new user's datas.
     socket.on('message', function (message) {
       console.log(message);
+      userDatas = message;
+      var dir = "/Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2] + "/";
+      console.log("Salut!");
+      if (!fs.existsSync(dir)){
+        console.log("Salut!");
+        fs.mkdir( __dirname + dir, err => {})
+      }
     });
 
 /* Function wich delete raws files and folders from data download  */

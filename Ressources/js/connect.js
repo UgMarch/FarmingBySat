@@ -8,8 +8,8 @@ $('#poke').click(function () {
   socket.emit('message', 'Salut Serveur, ça va?');
 });
 
-function sendUserData(){
-  socket.emit('message', 'User Receive!');
+function sendUserData(myDatas){
+  socket.emit('message', myDatas);
 }
 
 function extract() {

@@ -37,7 +37,6 @@ function goSecondStep(){
             if(city.length > 0){
               var regmail = /^[a-zA-Z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$/;
               if(regmail.test(mail)){
-                sendUserData();
                 document.getElementById('firstStep').style.display = "none";
                 document.getElementById('explainImages').style.display = "none";
                 document.getElementById('secondStep').style.display = "block";
@@ -86,8 +85,19 @@ function initMap() {
       counter++;
     }
     if(counter >= 2){
-      console.log(coordinates);
       setTimeout(goFourthStep,1000);
+      var myDatas = [];
+
+      myDatas.push(name);
+      myDatas.push(firstname);
+      myDatas.push(number);
+      myDatas.push(adress);
+      myDatas.push(postalCode);
+      myDatas.push(city);
+      myDatas.push(mail);
+      myDatas.push(coordinates);
+
+      sendUserData(myDatas);
     }
   });
 }
