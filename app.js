@@ -1,14 +1,54 @@
 var http = require('http');
 var fs = require('fs');
+var express = require('express');
+var app = express();
 var name4;
 var name8;
 
-/* Chargement du fichier index.html affiché au client */
-var server = http.createServer(function(req, res) {
-    fs.readFile('./home.html', 'utf-8', function(error, content) {
-        res.writeHead(200, {"Content-Type": "text/html"});
-        res.end(content);
-    });
+var firstName;
+var lastName;
+
+// app.js
+
+var server = require('http').createServer(app);
+
+app.use(express.static(__dirname + '/Ressources/'));
+
+app.get('/', function(req, res,next) {
+    res.sendFile(__dirname + '/Views/index.html');
+});
+
+app.post('/upload', function(req, res){
+
+  // create an incoming form object
+  var form = new formidable.IncomingForm();
+
+  // specify that we want to allow the user to upload multiple files in a single request
+  form.multiples = true;
+
+  // store all uploads in the /uploads directory
+  form.uploadDir = path.join(__dirname, '/uploads');
+
+  // every time a file has been uploaded successfully,
+  // rename it to it's orignal name
+  form.on('file', function(field, file) {
+    fs.rename(file.path, path.join(form.uploadDir, file.name));
+  });
+
+  // log any errors that occur
+  form.on('error', function(err) {
+    console.log('An error has occured: \n' + err);
+  });
+
+  // once all the files have been uploaded, send a response to the client
+  form.on('end', function() {
+    res.end('success');
+  });
+
+  // parse the incoming request containing the form data
+  console.log(form.parse(req));
+  form.parse(req);
+
 });
 
 /* Chargement de socket.io */
@@ -18,6 +58,8 @@ var io = require('socket.io').listen(server);
 io.sockets.on('connection', function (socket) {
 
     socket.emit('message', 'Vous êtes bien connecté ! ');
+
+    console.log("Un client s'est connecté");
 
     socket.on('message', function (message) {
       console.log(message);
