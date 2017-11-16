@@ -3,7 +3,7 @@ var map;
 var markers = [];
 var counter = 0;
 
-// Variables to store in databeses
+// Variables to store in databeses, First and second Step
 var name;
 var firstname;
 var number;
@@ -12,6 +12,17 @@ var postalCode;
 var city;
 var mail;
 var coordinates = [];
+
+// Variables to store in databeses, Third Step
+var pacDone = false;
+var pacFile;
+var nbh2;
+var nbparcelles;
+var typeOfSol = [];
+
+
+// Variables to store in databeses, fourthStep
+
 
 function hideElements(){
   //document.getElementById('secondStep').style.display = "none";
@@ -85,7 +96,7 @@ function initMap() {
       counter++;
     }
     if(counter >= 2){
-      setTimeout(goFourthStep,1000);
+      setTimeout(goThirdStep,1000);
       var myDatas = [];
 
       myDatas.push(name);
@@ -102,14 +113,22 @@ function initMap() {
   });
 }
 
-function goFourthStep(){
+// Adds a marker to the map and push to the array.
+function addMarker(location) {
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map
+  });
+  markers.push(marker);
+}
+
+function goThirdStep(){
     document.getElementById("secondStep").style.display = "none";
     document.getElementById("thirdStep").style.display = "block";
 
     $('#pac').on('change', function(){
-
-      console.log('test');
       var files = $(this).get(0).files;
+      pacFile = files[0].name;
 
       if (files.length > 0){
         // create a FormData object which will be sent as the data payload in the
@@ -131,7 +150,6 @@ function goFourthStep(){
           processData: false,
           contentType: false,
           success: function(data){
-              console.log('upload successful!\n' + data);
           },
           xhr: function() {
             // create an XMLHttpRequest
@@ -141,19 +159,7 @@ function goFourthStep(){
             xhr.upload.addEventListener('progress', function(evt) {
 
               if (evt.lengthComputable) {
-                /*// calculate the percentage of upload completed
-                var percentComplete = evt.loaded / evt.total;
-                percentComplete = parseInt(percentComplete * 100);
-
-                // update the Bootstrap progress bar with the new percentage
-                $('.progress-bar').text(percentComplete + '%');
-                $('.progress-bar').width(percentComplete + '%');
-
-                // once the upload reaches 100%, set the progress bar text to done
-                if (percentComplete === 100) {
-                  $('.progress-bar').html('Done');
-                }*/
-                console.log("done");
+                pacDone = true;
               }
             }, false);
             return xhr;
@@ -161,48 +167,40 @@ function goFourthStep(){
         });
       }
     });
-
-
-    /*document.querySelector("#pac").addEventListener('change', function() {
-      console.log(this.files[0].name);
-    });*/
-
-    /*var fileInput = document.querySelector('#pac'),
-    progress = document.querySelector('#progress');
-    fileInput.addEventListener('change', function() {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', 'index.html');
-      xhr.upload.addEventListener('progress', function(e) {
-          progress.value = e.loaded;
-          progress.max = e.total;
-      });
-      xhr.addEventListener('load', function() {
-          alert('Upload terminé !');
-      });
-      var form = new FormData();
-      form.append('file', fileInput.files[0]);
-      xhr.send(form);
-      //downloadFile(fileInput.files[0]);
-    });*/
 }
 
-// Adds a marker to the map and push to the array.
-function addMarker(location) {
-  var marker = new google.maps.Marker({
-    position: location,
-    map: map
-  });
-  markers.push(marker);
-}
+// Check user's answers for third step before go to the fourth and last step of formular.
+function goFourthStep(){
 
-function downloadFile(url, success) {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.responseType = "blob";
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            if (success) success(xhr.response);
-        }
-    };
-    xhr.send(null);
+  nbh2 = document.getElementById('nbH2').value;
+  nbparcelles = document.getElementById('nbParc').value;
+  typeOfSol = [];
+
+  typeOfSol.push(document.getElementById('zoneVulnerableIn').checked);
+  typeOfSol.push(document.getElementById('zoneProtegeeIn').checked);
+  typeOfSol.push(document.getElementById('natura2000In').checked);
+
+  console.log(pacDone);
+  console.log(nbh2);
+  console.log(nbparcelles);
+  console.log(typeOfSol);
+  console.log(pacFile);
+
+  if(pacDone == true){
+    if(isNaN(nbh2) == false){
+      if(isNaN(nbparcelles) == false){
+        console.log(nbh2);
+        console.log(nbparcelles);
+        console.log(typeOfSol);
+        //console.log(pacFile);
+      }else{
+        console.log("Vous n'avez pas renseigné votre nombre de parcelles!");
+      }
+    }else{
+      console.log("Vous n'avez pas renseigné votre nombre d'hectares");
+    }
+  }else{
+    console.log("Vous n'avez pas renseigné votre déclaration PAC!");
+  }
+
 }

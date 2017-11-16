@@ -58,6 +58,9 @@
       <p>
         <input type="text" placeholder="Nombre d'hectares total" id="nbH2" />
       </p>
+      <p>
+        <input type="text" placeholder="Nombre de parcelles" id="nbParc" />
+      </p>
         <div id="checkboxesZones">
           <p>
             <input id="zoneVulnerableIn" type="checkbox"/>
@@ -72,11 +75,24 @@
               <label for="natura2000In">Natura 2000</label>
           </p>
         </div>
-        <input id="pac" type="file" name="uploads[]"></br>
+        <p>
+          Déclaration PAC: <input id="pac" type="file" name="uploads[]">
+        </p>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <p>
+          <input type="button" value="Suivant" onclick="goFourthStep()" id="validateur"/>
+        </p>
     </div>
 
     <div id="fourthStep">
-
+      <p>
+        Documents concernants la parcelle : <input id="docsParc" type="file" name="uploads[]" multiple>
+      </p>
+      <p>
+        <input type="button" value="Suivant" onclick="goFourthStep()" id="validateur"/>
+      </p>
+      <p>
+        <input type="button" value="Suivant" onclick="goFourthStep()" id="validateur"/>
+      </p>
     </div>
 </body>

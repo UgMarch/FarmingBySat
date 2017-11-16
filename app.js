@@ -12,6 +12,7 @@ var name8;
 
 // New user Datas to store
 var userDatas;
+var nbParcNames = [];
 
 // Creation of the server
 var server = require('http').createServer(app);
@@ -73,12 +74,17 @@ io.sockets.on('connection', function (socket) {
 
     // Receive new user's datas.
     socket.on('message', function (message) {
-      console.log(message);
       userDatas = message;
       var dir = "/Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2] + "/";
-      console.log("Salut!");
       if (!fs.existsSync(dir)){
-        console.log("Salut!");
+        fs.mkdir( __dirname + dir, err => {})
+      }
+    });
+
+    socket.on('messageParcelle', function (message) {
+      userDatas = message;
+      var dir = "/Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2] + "/";
+      if (!fs.existsSync(dir)){
         fs.mkdir( __dirname + dir, err => {})
       }
     });
