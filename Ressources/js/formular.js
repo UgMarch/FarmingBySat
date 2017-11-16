@@ -189,10 +189,9 @@ function goFourthStep(){
   if(pacDone == true){
     if(isNaN(nbh2) == false){
       if(isNaN(nbparcelles) == false){
-        console.log(nbh2);
-        console.log(nbparcelles);
-        console.log(typeOfSol);
-        //console.log(pacFile);
+        document.getElementById('thirdStep').style.display = 'none';
+        document.getElementById('fourthStep').style.display = 'block';
+        proceedFourthStep();
       }else{
         console.log("Vous n'avez pas renseigné votre nombre de parcelles!");
       }
@@ -203,4 +202,8 @@ function goFourthStep(){
     console.log("Vous n'avez pas renseigné votre déclaration PAC!");
   }
 
+}
+
+function proceedFourthStep(){
+  console.log('in fourth step');
 }

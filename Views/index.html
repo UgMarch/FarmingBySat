@@ -59,7 +59,7 @@
         <input type="text" placeholder="Nombre d'hectares total" id="nbH2" />
       </p>
       <p>
-        <input type="text" placeholder="Nombre de parcelles" id="nbParc" />
+        <input type="text" placeholder="Nombre de parcelles pour couverts" id="nbParc" />
       </p>
         <div id="checkboxesZones">
           <p>
@@ -85,14 +85,66 @@
     </div>
 
     <div id="fourthStep">
+      <h5 id="emptyTitleParc"></h5>
       <p>
-        Documents concernants la parcelle : <input id="docsParc" type="file" name="uploads[]" multiple>
+        <select id="precRot">
+          <option value="Blé assolé">Blé assolé</option>
+          <option value="Blé de blé">Blé de blé</option>
+          <option value="Orge d'hiver">Orge d'hiver</option>
+          <option value="Orge de printemps">Orge de printemps</option>
+          <option value="Pois ou féverole">Pois ou féverole</option>
+          <option value="Soja">Soja</option>
+          <option value="Légume d'industrie">Légume d'industrie</option>
+          <option value="Maïs">Maïs</option>
+          <option value="Sorgho">Sorgho</option>
+          <option value="Betterave sucrière">Betterave sucrière</option>
+          <option value="Pomme de terre">Pomme de terre</option>
+          <option value="Tournesol">Tournesol</option>
+          <option value="Lin">Lin</option>
+          <option value="Tabac (Virginie)">Tabac (Virginie)</option>
+          <option value="Tabac (Burley)">Tabac (Burley)</option>
+          <option value="Autre">Autre</option>
+        </select>
       </p>
       <p>
-        <input type="button" value="Suivant" onclick="goFourthStep()" id="validateur"/>
+        <select id="nextRot">
+          <option value="Blé assolé">Blé assolé</option>
+          <option value="Blé de blé">Blé de blé</option>
+          <option value="Orge d'hiver">Orge d'hiver</option>
+          <option value="Orge de printemps">Orge de printemps</option>
+          <option value="Pois ou féverole">Pois ou féverole</option>
+          <option value="Soja">Soja</option>
+          <option value="Légume d'industrie">Légume d'industrie</option>
+          <option value="Maïs">Maïs</option>
+          <option value="Sorgho">Sorgho</option>
+          <option value="Betterave sucrière">Betterave sucrière</option>
+          <option value="Pomme de terre">Pomme de terre</option>
+          <option value="Tournesol">Tournesol</option>
+          <option value="Lin">Lin</option>
+          <option value="Tabac (Virginie)">Tabac (Virginie)</option>
+          <option value="Tabac (Burley)">Tabac (Burley)</option>
+          <option value="Autre">Autre</option>
+        </select>
       </p>
-      <p>
-        <input type="button" value="Suivant" onclick="goFourthStep()" id="validateur"/>
+      <!--  Grand champ de texte -->
+      <input type="text" id="intrant" placeholder="Renseignez vos intrants:"/>
+      <p id="declarationPAC">
+        Si vous avez: Cartographie de Fertilisation Farmstar: <input id="fertFarmStar" type="file" name="uploads[]">
       </p>
+      <p id="declarationPAC">
+        Analyse de Sol: <input id="anaSol" type="file" name="uploads[]">
+      </p>
+      <p id="declarationPAC">
+        Vos bilan azotés/hydrique: <input id="bilan" type="file" name="uploads[]" multiple>
+      </p>
+
+      <input type="text" id="rdt" placeholder="Renseignez vos rendements par h2 pour cette parcelle:"/>
+      <p id="declarationPAC">
+        Si vous avez: Cartographie de Fertilisation Farmstar: <input id="cartoRdt" type="file" name="uploads[]">
+      </p>
+      <!--  Grand champ de texte -->
+      <input type="text" id="intrant" placeholder="Remarques sur les avantages ou inconvénients de la parcelle?"/>
+
+      <input type="button" id="finalizeForm" value="Finir!" />
     </div>
 </body>
