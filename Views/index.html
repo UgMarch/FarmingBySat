@@ -86,7 +86,9 @@
 
     <div id="fourthStep">
       <h5 id="emptyTitleParc"></h5>
+      <p id="titreEtape4">Informations sur vos cultures</p>
       <p>
+        <label>Votre culture précédente :</label>
         <select id="precRot">
           <option value="Blé assolé">Blé assolé</option>
           <option value="Blé de blé">Blé de blé</option>
@@ -107,6 +109,7 @@
         </select>
       </p>
       <p>
+        <label>Votre culture suivante :</label>
         <select id="nextRot">
           <option value="Blé assolé">Blé assolé</option>
           <option value="Blé de blé">Blé de blé</option>
@@ -129,22 +132,21 @@
       <!--  Grand champ de texte -->
       <input type="text" id="intrant" placeholder="Renseignez vos intrants:"/>
       <p id="declarationPAC">
-        Si vous avez: Cartographie de Fertilisation Farmstar: <input id="fertFarmStar" type="file" name="uploads[]">
+        Cartographie de Fertilisation Farmstar * <input id="fertFarmStar" type="file" name="uploads[]">
       </p>
       <p id="declarationPAC">
-        Analyse de Sol: <input id="anaSol" type="file" name="uploads[]">
+        Analyses de Sol * <input id="anaSol" type="file" name="uploads[]">
       </p>
       <p id="declarationPAC">
-        Vos bilan azotés/hydrique: <input id="bilan" type="file" name="uploads[]" multiple>
+        Vos bilans azotés/hydriques * <input id="bilan" type="file" name="uploads[]" multiple>
       </p>
 
       <input type="text" id="rdt" placeholder="Renseignez vos rendements par h2 pour cette parcelle:"/>
       <p id="declarationPAC">
-        Si vous avez: Cartographie de Fertilisation Farmstar: <input id="cartoRdt" type="file" name="uploads[]">
+        Cartographie de Fertilisation Farmstar * <input id="cartoRdt" type="file" name="uploads[]">
       </p>
       <!--  Grand champ de texte -->
       <input type="text" id="intrant" placeholder="Remarques sur les avantages ou inconvénients de la parcelle?"/>
-
       <input type="button" id="NextParc" onclick="proceedFourthStep()" value="Parcelle suivante!" />
       <input type="button" id="finalizeForm" value="Finir!" />
     </div>
