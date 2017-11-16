@@ -8,15 +8,21 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy import misc
 
-if len(sys.argv) > 2:
+"""if len(sys.argv) > 2:
      x1,y1,x2,y2 = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
      stopProg = 0
 else:
     print('Le script ne peut pas se lancer, il faut lui donner 4 coordonnées')
     stopProg = 1
+"""
+x1=374453
+y1=5587986
+x2=378986
+y2=5584458
 
-if(stopProg==0):
-    """Récupération des paramètres  nécessaires à la géolocalisation"""
+if(1==1):#stopProg==0):
+    """Récupération des paramètres  nécessaires à la géolocalisation
+    Le fichier ndvi.tif est la carte sentinel transformée en NDVI"""
     with rasterio.open('ndvi.tif') as src:
         monImage = src.read()
         epsg = (int(str(rasterio._crs.UserDict(src.crs))[15:20]))
@@ -55,10 +61,10 @@ if(stopProg==0):
         for j in range (0,hauteur):
             imageCoupee[0][j][i] = monImage[0][j-IMAGE_Y_C1][i+IMAGE_X_C1]
 
-    ## On sauvegarde cette matrice en tif
+    ## On sauvegarde cette matrice en tif avec ces nvelles coordonnées
     outfile = r'.\carteNDVIFinale.tif'
 
     with rasterio.open(outfile, 'w', driver='GTiff', height=hauteur,
                               width=largeur, count=1, dtype=np.float32,
-                              crs=src.crs, transform=matriceConfiguration) as dst:
+                              crs=src.crs, transform=matriceConfiguration.from_gdal(UTM_C1_X, 10, 0, UTM_C1_Y, 0, -10)) as dst:
         dst.write(imageCoupee.astype(np.float32))
