@@ -20,9 +20,8 @@ var nbh2;
 var nbparcelles;
 var typeOfSol = [];
 
-
 // Variables to store in databeses, fourthStep
-
+var parcCount = 0;
 
 function hideElements(){
   //document.getElementById('secondStep').style.display = "none";
@@ -190,7 +189,6 @@ function goFourthStep(){
     if(isNaN(nbh2) == false){
       if(isNaN(nbparcelles) == false){
         document.getElementById('thirdStep').style.display = 'none';
-        document.getElementById('fourthStep').style.display = 'block';
         proceedFourthStep();
       }else{
         console.log("Vous n'avez pas renseigné votre nombre de parcelles!");
@@ -206,4 +204,10 @@ function goFourthStep(){
 
 function proceedFourthStep(){
   console.log('in fourth step');
+  parcCount++;
+  if(parcCount == nbparcelles){
+    document.getElementById('finalizeForm').style.display = 'block';
+  }
+  document.getElementById('emptyTitleParc').value = "Parcelle n°"+parcCount;
+  document.getElementById('fourthStep').style.display = 'block';
 }
