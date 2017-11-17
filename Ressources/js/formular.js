@@ -201,13 +201,13 @@ function goFourthStep(){
         document.getElementById('thirdStep').style.display = 'none';
         proceedFourthStep();
       }else{
-        console.log("Vous n'avez pas renseigné votre nombre de parcelles!");
+        alert("Vous n'avez pas renseigné votre nombre de parcelles!");
       }
     }else{
-      console.log("Vous n'avez pas renseigné votre nombre d'hectares");
+      alert("Vous n'avez pas renseigné votre nombre d'hectares");
     }
   }else{
-    console.log("Vous n'avez pas renseigné votre déclaration PAC!");
+    alert("Vous n'avez pas renseigné votre déclaration PAC!");
   }
 
 }
@@ -219,7 +219,7 @@ function proceedFourthStep(){
     document.getElementById('finalizeForm').style.display = 'block';
   }
 
-  document.getElementById('emptyTitleParc').value = "Parcelle n°"+parcCount;
+  document.getElementById('emptyTitleParc').innerHTML = "Parcelle n°"+parcCount;
 
   document.getElementById('fertFarmStar').value = '';
   document.getElementById('anaSol').value = '';
@@ -250,20 +250,27 @@ function nextInFourthStep(){
   var rdt = document.getElementById('rdt').value;
   var avis = document.getElementById('advdis').value;
 
-  dataParc.push(precRot);
-  dataParc.push(nextRot);
-  dataParc.push(intrant);
-  dataParc.push(rdt);
-  dataParc.push(avis);
-  dataParc.push(fertFarmStarName);
-  dataParc.push(anaSolName);
-  dataParc.push(bilanNames);
-  dataParc.push(cartoRdtName);
+  if(intrant != '' && intrant != null){
+    if(rdt != '' && rdt != null){
+      dataParc.push(precRot);
+      dataParc.push(nextRot);
+      dataParc.push(intrant);
+      dataParc.push(rdt);
+      dataParc.push(avis);
+      dataParc.push(fertFarmStarName);
+      dataParc.push(anaSolName);
+      dataParc.push(bilanNames);
+      dataParc.push(cartoRdtName);
+      allDatasParc.push(dataParc);
+      proceedFourthStep();
+    }else{
+      alert("Vous n'avez pas renseigné vos rendements par h2 sur cette parcelle!");
+    }
+  }else{
+    alert("Vous n'avez pas renseigné vos intrants sur cette parcelle!");
+  }
 
-  allDatasParc.push(dataParc);
-  console.log(allDatasParc[0]);
 
-  proceedFourthStep();
 }
 
 function addEventInputList(id){
