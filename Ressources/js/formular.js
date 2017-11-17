@@ -29,6 +29,7 @@ var fertFarmStarName;
 var anaSolName;
 var bilanNames = [];
 var cartoRdtName;
+var finalParc = false;
 
 console.log('hello');
 
@@ -221,6 +222,7 @@ function proceedFourthStep(){
   if(parcCount == nbparcelles){
     document.getElementById('finalizeForm').style.display = 'block';
     document.getElementById('NextParc').style.display = 'none';
+    finalParc = true;
   }
 
   document.getElementById('emptyTitleParc').innerHTML = "Parcelle n°"+parcCount;
@@ -274,7 +276,13 @@ function nextInFourthStep(){
       dataParc.push(bilanNames);
       dataParc.push(cartoRdtName);
       allDatasParc.push(dataParc);
-      proceedFourthStep();
+      if(finalParc){
+        document.getElementById('fourthStep').style.display = 'none';
+        document.getElementById('FinalStep').style.display = 'block';
+        ///// TODO, SEND DATAS TO SERVOR
+      }else{
+        proceedFourthStep();
+      }
     }else{
       alert("Vous n'avez pas renseigné vos rendements par h2 sur cette parcelle!");
     }
