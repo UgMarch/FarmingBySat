@@ -117,7 +117,7 @@ select
     padding: 2vh;
 }
 
-#validateur
+#validateur, #NextParc
 {
     display: block;
     position: relative;
@@ -219,6 +219,31 @@ select
   border: 1px dotted brown;
 }
 /*************************************************************************/
+/*********************** Liste déroulante ********************************/
+#precRot, #nextRot
+{
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    overflow: hidden;
+    background: url(../images/newArrow.png) no-repeat center rgba(128,128,128,0.3);
+    text-align: center;
+}
+
+option[value=""][disabled] {
+  display: none;
+}
+/**************************************************************************/
+#intrant, #rdt
+{
+    width: -moz-available;
+}
+
+#advdis
+{
+    width: -moz-available;
+    height: 24vh;
+}
+
 
 #zoneVulnerableIn, #zoneProtegeeIn, #natura2000In
 {
