@@ -12,6 +12,10 @@ function sendUserData(myDatas){
   socket.emit('message', myDatas);
 }
 
+function sendUserDataParc(myDatas){
+  socket.emit('messageParcelle', myDatas);
+}
+
 function extract() {
   socket.emit('extractFile', "Copernicus sends us some datas");
 }

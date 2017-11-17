@@ -136,9 +136,10 @@ function goThirdStep(){
 
     $('#pac').on('change', function(){
       var files = $(this).get(0).files;
-      pacFile = files[0].name;
-      console.log(document.getElementById('pac'));
+
       if (files.length > 0){
+
+        pacFile = files[0].name;
         // create a FormData object which will be sent as the data payload in the
         // AJAX request
         var formData = new FormData();
@@ -150,7 +151,7 @@ function goThirdStep(){
           // add the files to formData object for the data payload
           formData.append('uploads[]', file, file.name);
         }
-
+        console.log(pacDone + "Test event");
         $.ajax({
           url: '/upload',
           type: 'POST',
@@ -160,6 +161,7 @@ function goThirdStep(){
           success: function(data){
           },
           xhr: function() {
+            console.log(pacDone + "Test event2");
             // create an XMLHttpRequest
             var xhr = new XMLHttpRequest();
 
@@ -168,7 +170,7 @@ function goThirdStep(){
 
               if (evt.lengthComputable) {
                 pacDone = true;
-                console.log(document.getElementById('pac'));
+                console.log(pacDone + "Test event");
               }
             }, false);
             return xhr;
@@ -194,6 +196,7 @@ function goFourthStep(){
   console.log(nbparcelles);
   console.log(typeOfSol);
   console.log(pacFile);
+  console.log("Le pacdone est de:"+ pacDone);
 
   if(pacDone == true){
     if(isNaN(nbh2) == false){
@@ -217,6 +220,7 @@ function proceedFourthStep(){
   parcCount++;
   if(parcCount == nbparcelles){
     document.getElementById('finalizeForm').style.display = 'block';
+    document.getElementById('NextParc').style.display = 'none';
   }
 
   document.getElementById('emptyTitleParc').innerHTML = "Parcelle n°"+parcCount;
@@ -234,6 +238,16 @@ function proceedFourthStep(){
   addEventInputList('anaSol');
   addEventInputList('bilan');
   addEventInputList('cartoRdt');
+
+  var tempDatas = [];
+  tempDatas.push(name);
+  tempDatas.push(firstname);
+  tempDatas.push(number);
+  tempDatas.push(parcCount);
+
+  console.log(tempDatas);
+
+  sendUserDataParc(tempDatas);
 
   document.getElementById('fourthStep').style.display = 'block';
 }

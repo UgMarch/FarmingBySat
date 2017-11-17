@@ -12,6 +12,7 @@ var name8;
 
 // New user Datas to store
 var userDatas;
+var userParCreate;
 var nbParcNames = [];
 
 // Detect step of user
@@ -39,8 +40,12 @@ app.post('/upload', function(req, res){
 
   // specify that we want to allow the user to upload multiple files in a single request
   form.multiples = true;
+  if(wichStep == 0){
+    var dir = "/Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2] + "/";
+  }else{
+    var dir = "/Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2] + "/Parcelle" + wichStep + "/";
+  }
 
-  var dir = "/Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2] + "/";
 
   // store all uploads in the /uploads directory
   form.uploadDir = path.join(__dirname, dir);
@@ -78,17 +83,21 @@ io.sockets.on('connection', function (socket) {
     // Alert the server
     console.log("Un client s'est connecté");
 
-    // Receive new user's datas.
-    socket.on('message', function (message) {
-      userDatas = message;
-      var dir = "/Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2] + "/";
+    // Create a new folder to store a parcelle data
+    socket.on('messageParcelle', function (message) {
+      userParCreate = message;
+      wichStep = userParCreate[3];
+      var dir = "/Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2] + "/Parcelle" + wichStep + "/";
       if (!fs.existsSync(dir)){
         fs.mkdir( __dirname + dir, err => {})
       }
     });
 
-    socket.on('messageParcelle', function (message) {
+    // Receive new user's datas.
+    socket.on('message', function (message) {
       userDatas = message;
+      wichStep = 0;
+      // wichStep prend la valeur de numéro parcelle
       var dir = "/Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2] + "/";
       if (!fs.existsSync(dir)){
         fs.mkdir( __dirname + dir, err => {})
