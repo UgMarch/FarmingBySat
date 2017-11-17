@@ -14,6 +14,12 @@ var name8;
 var userDatas;
 var nbParcNames = [];
 
+// Detect step of user
+var wichStep;
+
+// Detect if we delete the user
+var isFinish;
+
 // Creation of the server
 var server = require('http').createServer(app);
 

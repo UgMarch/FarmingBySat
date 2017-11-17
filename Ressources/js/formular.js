@@ -23,6 +23,15 @@ var typeOfSol = [];
 // Variables to store in databeses, fourthStep
 var parcCount = 0;
 
+// Varaibles for last Step, with Parcelles
+var allDatasParc = [];
+var fertFarmStarName;
+var anaSolName;
+var bilanNames = [];
+var cartoRdtName;
+
+console.log('hello');
+
 function hideElements(){
   //document.getElementById('secondStep').style.display = "none";
   document.getElementById('thirdStep').style.display = "none";
@@ -128,7 +137,7 @@ function goThirdStep(){
     $('#pac').on('change', function(){
       var files = $(this).get(0).files;
       pacFile = files[0].name;
-
+      console.log(document.getElementById('pac'));
       if (files.length > 0){
         // create a FormData object which will be sent as the data payload in the
         // AJAX request
@@ -159,6 +168,7 @@ function goThirdStep(){
 
               if (evt.lengthComputable) {
                 pacDone = true;
+                console.log(document.getElementById('pac'));
               }
             }, false);
             return xhr;
@@ -208,6 +218,105 @@ function proceedFourthStep(){
   if(parcCount == nbparcelles){
     document.getElementById('finalizeForm').style.display = 'block';
   }
+
   document.getElementById('emptyTitleParc').value = "Parcelle n°"+parcCount;
+
+  document.getElementById('fertFarmStar').value = '';
+  document.getElementById('anaSol').value = '';
+  document.getElementById('bilan').value = '';
+  document.getElementById('cartoRdt').value = '';
+
+  document.getElementById('intrant').value = '';
+  document.getElementById('rdt').value = '';
+  document.getElementById('advdis').value = '';
+
+  addEventInputList('fertFarmStar');
+  addEventInputList('anaSol');
+  addEventInputList('bilan');
+  addEventInputList('cartoRdt');
+
   document.getElementById('fourthStep').style.display = 'block';
+}
+
+function nextInFourthStep(){
+  console.log("next");
+
+  var dataParc = [];
+  var e = document.getElementById("precRot");
+  var precRot = e.options[e.selectedIndex].value;
+  e = document.getElementById("precRot");
+  var nextRot = e.options[e.selectedIndex].value;
+  var intrant = document.getElementById('intrant').value;
+  var rdt = document.getElementById('rdt').value;
+  var avis = document.getElementById('advdis').value;
+
+  dataParc.push(precRot);
+  dataParc.push(nextRot);
+  dataParc.push(intrant);
+  dataParc.push(rdt);
+  dataParc.push(avis);
+  dataParc.push(fertFarmStarName);
+  dataParc.push(anaSolName);
+  dataParc.push(bilanNames);
+  dataParc.push(cartoRdtName);
+
+  allDatasParc.push(dataParc);
+  console.log(allDatasParc[0]);
+
+  proceedFourthStep();
+}
+
+function addEventInputList(id){
+  $('#'+id).on('change', function(){
+    var files = $(this).get(0).files;
+    if (files.length > 0){
+      // create a FormData object which will be sent as the data payload in the
+      // AJAX request
+      var formData = new FormData();
+
+      if(id == 'fertFarmStar'){
+        fertFarmStarName = files[0].name;
+      } else if(id == 'anaSol'){
+        anaSolName = files[0].name;
+      } else if(id == 'bilan'){
+        bilanNames.push(files[0].name);
+        if(files.length > 1){
+          bilanNames.push(files[1].name);
+        }
+      } else if(id == 'cartoRdt'){
+        cartoRdtName = files[0].name;
+      }
+
+      // loop through all the selected files and add them to the formData object
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+
+        // add the files to formData object for the data payload
+        formData.append('uploads[]', file, file.name);
+      }
+
+      $.ajax({
+        url: '/upload',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(data){
+        },
+        xhr: function() {
+          // create an XMLHttpRequest
+          var xhr = new XMLHttpRequest();
+
+          // listen to the 'progress' event
+          xhr.upload.addEventListener('progress', function(evt) {
+
+            if (evt.lengthComputable) {
+              pacDone = true;
+            }
+          }, false);
+          return xhr;
+        }
+      });
+    }
+  });
 }
