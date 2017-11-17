@@ -239,8 +239,6 @@ function proceedFourthStep(){
 }
 
 function nextInFourthStep(){
-  console.log("next");
-
   var dataParc = [];
   var e = document.getElementById("precRot");
   var precRot = e.options[e.selectedIndex].value;
