@@ -225,12 +225,17 @@ select
     width: auto;
 }
 
-#declarationPAC
+#declarationPAC, #titreEtape4
 {
     margin: 2vh;
     font-size: 20px;
     font-weight: bold;
     color: brown;
+}
+
+[name="uploads[]"]
+{
+    width: auto;
 }
 
 @media screen and (max-width: 1040px)
