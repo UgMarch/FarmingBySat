@@ -1,3 +1,9 @@
+/*  MISE EN FORME DU FORMULAIRE DE DONNEES 
+    Les différentes étapes sont indépendantes, elles suivent la nomenclature du index.html
+    Il y a aussi une partie Checkbox, qui permet la mise en forme des cases à cocher,
+    une partie liste déroulante, qui permet la mise en forme des listes déroulantes
+    et enfin une partie RESPONSIVE, qui gère la mise en forme pour mobile et tablette */
+
 .imgExplications
 {
     display:inline-block;
@@ -160,6 +166,35 @@ select
     width: -moz-fit-content;
 }
 
+#intrant, #rdt
+{
+    width: -moz-available;
+}
+
+#advdis
+{
+    width: -moz-available;
+    height: 24vh;
+}
+
+
+#zoneVulnerableIn, #zoneProtegeeIn, #natura2000In
+{
+    width: auto;
+}
+
+#declarationPAC, #titreEtape4
+{
+    margin: 2vh;
+    font-size: 20px;
+    font-weight: bold;
+    color: brown;
+}
+
+[name="uploads[]"]
+{
+    width: auto;
+}
 
 /**************************** Partie Checkbox ************************/
 /* Cachons la case à cocher */
@@ -248,36 +283,7 @@ option[value=""][disabled] {
   display: none;
 }
 /**************************************************************************/
-#intrant, #rdt
-{
-    width: -moz-available;
-}
-
-#advdis
-{
-    width: -moz-available;
-    height: 24vh;
-}
-
-
-#zoneVulnerableIn, #zoneProtegeeIn, #natura2000In
-{
-    width: auto;
-}
-
-#declarationPAC, #titreEtape4
-{
-    margin: 2vh;
-    font-size: 20px;
-    font-weight: bold;
-    color: brown;
-}
-
-[name="uploads[]"]
-{
-    width: auto;
-}
-
+/****************************** RESPONSIVE ********************************/
 @media screen and (max-width: 1040px)
 {
     .imgExplications
@@ -309,3 +315,4 @@ option[value=""][disabled] {
         margin: 2% auto 2% auto;
     }
 }
+/****************************************************************************/
