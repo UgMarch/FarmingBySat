@@ -1,4 +1,9 @@
+<!--    Ce fichier est le visuel visiteur du serveur, il contient les formulaires
+        destinés à l'agriculteur. Les informations sont récoltés par le script formular.js
+        et stockés dans une base de données
+        La mise en forme du formulaire est effectuée dans le fichier formulaire.css  -->
 <head>
+    <!-- Penser à placer le nom de la startup dans le title -->
     <title>Mon copain le satellite</title>
     <meta charset="utf-8"></meta>
     <script async defer
@@ -12,14 +17,19 @@
     <script src="js/upload.js"></script>
 </head>
 <body onload="hideElements()">
+    
+    <!-- Penser à placer le nom de la startup dans le h1 -->
     <header class="enTete">
         <h1>Vos couverts végétaux</h1>
     </header>
-    <!-- Retirage du logo demandé par Alexanda, Charlotte et Valentin #cestpasmoi
-    <img class="imgLogo" src="images/logo.png"/>
-    -->
+    
+    <!-- Première image à droite, qui explique le fonctionnement de la startup -->
     <img id="explainImages" class="imgExplications" src="images/explications.jpg"/>
 
+    <!-- Formulaire d'inscription, première étape, comprend :
+            - Nom, prénom
+            - Numéro téléphone, adresse e-mail
+            - Rue, Code postal, Ville   -->
     <div id="firstStep">
         <h2>INSCRIVEZ-VOUS</h2>
       <p>
@@ -42,6 +52,9 @@
       </p>
     </div>
 
+    <!--    Lors de cette deuxième étape, on propose une carte google map, avec au choix vue gps ou vue satellite,
+            et on demande à l'agriculteur de renseigner un rectangle qui comprend l'ensemble de ses champs
+            à l'aide de deux curseurs position  -->
     <div id="secondStep">
       <div id="secondStepMap">
       </div>
@@ -52,6 +65,10 @@
       </div>
     </div>
 
+    <!--    Troisième étape du formulaire, on demande à l'agriculteur de renseigner son nombre d'hectare total, et 
+            le nombre de parcelles où il souhaite obtenir un conseil pour son couvert végétal
+            Ensuite, on lui demande si il a des parcelles en zone vulnérable, protégée ou en natura 2000
+            Enfin, il envoie sa déclaration de PAC via un bouton explorer -->
     <div id="thirdStep">
       <h2>INFORMATIONS GENERALES SUR VOS PARCELLES</h2>
     </br>
@@ -84,6 +101,11 @@
         </p>
     </div>
 
+    <!--    Pour chaque parcelle où l'agriculteur souhaite un conseil agronomique, on lui demande les informations suivantes:
+            - Quelle est la culture précédente sur cette parcelle ?
+            - Quelle culture prévue ensuite ?
+            - Si l'agri les a (=facultatif) la carte de fertilisation Farmstar, les analyses de sol, un bilan azoté / hydrique,
+            une cartographie de rendement, et remarques complémentaires sur la parcelle -->
     <div id="fourthStep">
       <h2 id="emptyTitleParc"></h2>
       <p id="titreEtape4">Informations sur vos cultures</p>
@@ -131,7 +153,6 @@
           <option value="Autre">Autre</option>
         </select>
       </p>
-      <!--  Grand champ de texte -->
       <input type="text" id="intrant" placeholder="Renseignez vos intrants:"/>
       <p id="declarationPAC">
         Cartographie de Fertilisation Farmstar * <input id="fertFarmStar" type="file" name="uploads[]">
@@ -145,14 +166,16 @@
 
       <input type="text" id="rdt" placeholder="Renseignez vos rendements par h2 pour cette parcelle:"/>
       <p id="declarationPAC">
-        Cartographie de Fertilisation Farmstar * <input id="cartoRdt" type="file" name="uploads[]">
+        Cartographie de rendement *<input id="cartoRdt" type="file" name="uploads[]">
       </p>
       <!--  Grand champ de texte -->
-      <input type="text" id="advdis" placeholder="Eventuelles remarques sur les avantages ou inconvénients de la parcelle?"/>
+      <input type="textarea" id="advdis" placeholder="Eventuelles remarques sur les avantages ou inconvénients de la parcelle?"/>
       <input type="button" id="NextParc" onclick="nextInFourthStep()" value="Parcelle suivante!" />
       <input type="button" id="finalizeForm" value="Finir!" onclick="nextInFourthStep()"/>
       <p id="noteBasPage">* Ce champ n'est pas obligatoire</p>
     </div>
+
+    <!-- Message de fin, indiquant que l'agriculteur recevra via e-mail son conseil sur couvert végétal -->
     <div id="FinalStep">
       <p>
         Merci beaucoup d'avoir rempli ce formulaire, vous recevrez un mail lors de la réception de vos informations!
