@@ -10,6 +10,12 @@ var app = express();
 var name4;
 var name8;
 
+// UTM coordinates
+var xUtmFirst
+var yUtmFirst
+var xUtmSecond
+var yUtmSecond
+
 // New user Datas to store
 var userDatas;
 var userParCreate;
@@ -77,7 +83,7 @@ var io = require('socket.io').listen(server);
 /* Begin of synchronous listening of server */
 io.sockets.on('connection', function (socket) {
 
-    // Send a temp message to the client
+    // Send a temp message to the client to confirm his connection
     socket.emit('message', 'Vous êtes bien connecté ! ');
 
     // Alert the server
@@ -95,6 +101,7 @@ io.sockets.on('connection', function (socket) {
 
     // Receive new user's datas.
     socket.on('message', function (message) {
+      var utm = require('utm')
       userDatas = message;
       wichStep = 0;
       // wichStep prend la valeur de numéro parcelle
@@ -102,15 +109,42 @@ io.sockets.on('connection', function (socket) {
       if (!fs.existsSync(dir)){
         fs.mkdir( __dirname + dir, err => {})
       }
+      var test = utm.fromLatLon(userDatas[7][0], userDatas[7][1]);
+      var test1 = utm.fromLatLon(userDatas[7][2], userDatas[7][3]);
+      xUtmFirst = test.easting;
+      yUtmFirst = test.northing;
+      xUtmSecond = test1.easting;
+      yUtmSecond = test1.northing;
+      socket.emit('beginProcedureDown', 'Procédure à lancer!');
+      /*xUtmFirst = 484253.6446280315;
+      yUtmFirst = 5535083.270723516;
+      xUtmSecond = 487740.28372576815;
+      yUtmSecond = 5530873.981142561;
+      socket.emit('deleteFinished', 'Suppression terminée');*/
     });
 
-/* Function wich delete raws files and folders from data download  */
-    socket.on('deleteData', function (message) {
-      deleteFile('OSquery-result.xml');
-      deleteFile('product_list');
-      deleteFolder('logs/');
-      deleteFolder('MANIFEST/');
-      console.log('files deleted successfully!');
+    /* Download a package from copernicus */
+    // TODO : handle coordinates
+    socket.on('coordinates', function (message) {
+      console.log("Une requete de téléchargement! Il veut les coordonnées suivantes: ");
+      console.log(userDatas[7]);
+      /*  Begin Download thanks to sh file  */
+      const exec = require('child_process').exec;
+      //const testscript = exec('"./recupDonnees.sh" -c '+message[1]+','+message[0]+':'+message[3]+','+message[2]); // Longitude et lattitude
+      const testscript = exec('"./Ressources/recupDonnees.sh" -c '+userDatas[7][1]+','+userDatas[7][0]+':'+userDatas[7][3]+','+userDatas[7][2]); // Longitude et lattitude
+      console.log("Téléchargement lancé?");
+      testscript.stdout.on('data', function(data){
+         //TODO: When Download is finished, call extract, then call delete
+          console.log(""+data);
+      });
+      testscript.stderr.on('data', function(data){
+          console.log(data);
+      });
+      testscript.on('close', function(data){
+          console.log('end');
+          socket.emit('dataDownloaded', 'Téléchargement terminé!');
+      });
+      console.log("ALLO!");
     });
 
 /* Extract only images from the download zip and delete this archive */
@@ -118,7 +152,7 @@ io.sockets.on('connection', function (socket) {
       var fs = require('fs');
       var parse = require('csv-parse');
       var myName = [];
-      fs.createReadStream("product-list.csv")
+      fs.createReadStream("Ressources/product-list.csv")
         .pipe(parse({delimiter: ','}))
         .on('data', function(csvrow) {
         myName.push(csvrow[0]);
@@ -127,8 +161,8 @@ io.sockets.on('connection', function (socket) {
         //console.log("Finish get Copernicus package name : " + myName);
         var Zip = require('adm-zip');
         for (var i = 0; i < myName.length; i++) {
-          if(fs.existsSync("farmingData/"+myName[i]+".zip")){
-            var myzip = new Zip("farmingData/"+myName[i]+".zip");
+          if(fs.existsSync("Ressources/farmingData/"+myName[i]+".zip")){
+            var myzip = new Zip("Ressources/farmingData/"+myName[i]+".zip");
             //myzip.extractAllTo("farmingData/"+myName, true);
             /*  Extract Only IMG_DATA  */
             var zipEntries = myzip.getEntries();
@@ -138,120 +172,79 @@ io.sockets.on('connection', function (socket) {
     		      if (position != -1) {
                 var total = position + myString.length;
                 if( total == zipEntry.entryName.length){
-                  myzip.extractEntryTo( zipEntry.entryName,"farmingData/"+myName[i], false, true);
+                  myzip.extractEntryTo( zipEntry.entryName,"Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2] + "/", false, true);
                 }
     		      }
     	      });
-            deleteFile('farmingData/'+myName[i]+'.zip');
+            deleteFile('Ressources/farmingData/'+myName[i]+'.zip');
             console.log("Extraction of " + myName[i] + " is finished!");
+            socket.emit('extractFinished', 'Extraction terminée!');
           }
         }
       });
     });
 
-/* Download a package from copernicus */
-// TODO : handle coordinates
-    socket.on('coordinates', function (message) {
-      console.log("Une requete de téléchargement! Il veut les coordonnées suivantes: ");
-      console.log(message);
-
-      /*  Modify coordinates to utm (usefull later) */
-      /*var utm = require('utm-latlng');
-      var utmObj = new utm();
-      var utmObj = utmObj.convertLatLngToUtm(message[0], message[1]);
-      console.log("convert done");
-      console.log(utmObj);*/
-
-      /*  Begin Download thanks to sh file  */
-      const exec = require('child_process').exec;
-      const testscript = exec('"./recupDonnees.sh" -c '+message[1]+','+message[0]+':'+message[3]+','+message[2]); // Longitude et lattitude
-      console.log("Téléchargement lancé?");
-      testscript.stdout.on('data', function(data){
-         //TODO: When Download is finished, call extract, then call delete
-          console.log("Heyheyhey"+data);
-      });
-      testscript.stderr.on('data', function(data){
-          console.log(data);
-      });
+    /* Function wich delete raws files and folders from data download  */
+    socket.on('deleteData', function (message) {
+      deleteFile('./OSquery-result.xml');
+      deleteFile('./Ressources/product_list.xml');
+      deleteFolder('./logs/');
+      deleteFolder('./MANIFEST/');
+      console.log('files deleted successfully!');
+      socket.emit('deleteFinished', 'Suppression terminée');
     });
 
-    /*  Execute Java code to convert images  */
-    socket.on('execJava', function(message) {
-      var exec = require('child_process').exec;
-      var child = exec('java -jar hello.jar', function (error, stdout, stderr){
-        console.log('Output -> ' + stdout);
-        if(error !== null){
-          console.log("Error -> "+error);
-        }
-      });
-    });
-
-    /*  Find images name to send them to java program */
+    /*  Find images name to send them to pythonn script */
     socket.on('findImagesName', function(data){
       var fs = require('fs');
-      var parse = require('csv-parse');
-      var myName = [];
-      fs.createReadStream("product-list.csv")
-        .pipe(parse({delimiter: ','}))
-        .on('data', function(csvrow) {
-        myName.push(csvrow[0]);
-      })
-      .on('end',function() {
-        console.log("Finish get Copernicus package name : " + myName[0] +" For detection." );
-        if(fs.existsSync("farmingData/"+myName[0])){
+      //name
+      var dir = "./Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2];
+      console.log(dir)
+      //GetImages
+      console.log("Je suis arrivé ici, c'est good!");
+        if(fs.existsSync(dir)){
           console.log("Coucou tout le monde!");
         }
-        if( fs.existsSync("farmingData/"+myName[0]+"/R10m") ) {
+        if( fs.existsSync(dir + "/R10m") ) {
           console.log("Folder 10 exist!");
-          var myPath = "farmingData/"+myName[0]+"/R10m";
+          var myPath = dir + "/R10m";
           fs.readdirSync(myPath).forEach(function(file) {
             findNames("B04", "B08", myPath, file);
           });
           console.log(name4 + " and " + name8);
-        }else if(fs.existsSync("farmingData/"+myName[0]+"/R20m")  ){
-          var myPath = "farmingData/"+myName[0]+"/R10m";
+        }else if(fs.existsSync(dir + "/R20m")){
+          var myPath = dir + "/R20m";
           fs.readdirSync(myPath).forEach(function(file) {
             findNames("B04", "B8A", myPath, file);
           });
           console.log(name4 + " and " + name8);
-        }else if(fs.existsSync("farmingData/"+myName[0]+"/R60m")  ){
-          var myPath = "farmingData/"+myName[0]+"/R10m";
+        }else if(fs.existsSync(dir + "/R60m")  ){
+          var myPath = dir + "/R60m";
           fs.readdirSync(myPath).forEach(function(file) {
             findNames("B04", "B8A", myPath, file);
           });
           console.log(name4 + " and " + name8);
         }else {
           console.log("Just take images!");
-          var myPath = "farmingData/"+myName[0];
+          var myPath = dir;
           fs.readdirSync(myPath).forEach(function(file) {
             findNames("B04", "B08", myPath, file);
           });
           console.log(name4 + " and " + name8);
         }
-        /*var spawn = require("child_process").spawn;
-        var process = spawn('python',["imageNDVI.py", name4, name8 ]);
-        process.stdout.on('data', function (data){
-          console.log("Traitement fini!");
-        });*/
 
         var PythonShell = require('python-shell');
+        console.log(xUtmFirst+' '+yUtmFirst+' '+xUtmSecond+' '+yUtmSecond);
         var options = {
           pythonPath: 'python3',
-          args: [name4, name8,myName[0]]
+          args: [name4, name8, xUtmFirst, yUtmFirst, xUtmSecond, yUtmSecond, userDatas[0], userDatas[1], userDatas[2]]
         }
-        PythonShell.run('imageNDVI.py', options, function (err,results){
-          console.log('results: %j', results);
+        PythonShell.run('./Ressources/imageNDVITotal.py', options, function (err,results){
+          //if (err) throw err;
+              // results is an array consisting of messages collected during execution
+              console.log('results: %j', results);
         });
-        /*pyshell.on('message', function(message){
-          console.log(message);
-        });
-        pyshell.end(function (err) {
-          if(err){
-            throw err;
-          }
-          console.log('finished');
-        });*/
-      });
+
     });
 
 });

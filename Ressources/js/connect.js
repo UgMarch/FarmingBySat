@@ -1,8 +1,36 @@
+// Connect with socket io
 var socket = io.connect('http://localhost:8080');
 
+/*  Receivers  */
+
+// Receive connection's confirmation from server
 socket.on('message', function(message) {
   alert('Le serveur a un message pour vous : '+message);
 });
+
+socket.on('beginProcedureDown', function(message) {
+  console.log("Begin Telechargement!");
+  socket.emit('coordinates', "Copernicus sends us some datas");
+});
+
+//
+socket.on('dataDownloaded', function(message) {
+  console.log("Begin Extraction");
+  socket.emit('extractFile', "Copernicus sends us some datas");
+});
+
+socket.on('extractFinished', function(message) {
+  console.log("Begin Deletion");
+  socket.emit('deleteData', "Asked me to delete raws!");
+});
+
+socket.on('deleteFinished', function(message) {
+  console.log("Begin NDVI");
+  socket.emit('findImagesName', 'Me too!');
+});
+
+/*  Senders  */
+
 
 $('#poke').click(function () {
   socket.emit('message', 'Salut Serveur, ça va?');
