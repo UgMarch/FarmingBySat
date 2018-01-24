@@ -1,4 +1,4 @@
-// Often necessary modules for server
+// Necessary modules for server
 var http = require('http');
 var fs = require('fs');
 var path = require('path');
@@ -10,7 +10,7 @@ var app = express();
 var name4;
 var name8;
 
-// UTM coordinates
+// UTM coordinates for python script cut
 var xUtmFirst
 var yUtmFirst
 var xUtmSecond
@@ -104,6 +104,7 @@ io.sockets.on('connection', function (socket) {
       var utm = require('utm')
       userDatas = message;
       wichStep = 0;
+
       // wichStep prend la valeur de numéro parcelle
       var dir = "/Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2] + "/";
       if (!fs.existsSync(dir)){
@@ -116,31 +117,24 @@ io.sockets.on('connection', function (socket) {
       xUtmSecond = test1.easting;
       yUtmSecond = test1.northing;
       socket.emit('beginProcedureDown', 'Procédure à lancer!');
-      /*xUtmFirst = 484253.6446280315;
-      yUtmFirst = 5535083.270723516;
-      xUtmSecond = 487740.28372576815;
-      yUtmSecond = 5530873.981142561;
-      socket.emit('deleteFinished', 'Suppression terminée');*/
     });
 
     /* Download a package from copernicus */
-    // TODO : handle coordinates
     socket.on('coordinates', function (message) {
       console.log("Une requete de téléchargement! Il veut les coordonnées suivantes: ");
       console.log(userDatas[7]);
       /*  Begin Download thanks to sh file  */
-      const exec = require('child_process').exec;
-      //const testscript = exec('"./recupDonnees.sh" -c '+message[1]+','+message[0]+':'+message[3]+','+message[2]); // Longitude et lattitude
+      const exec = require('child_process').exec; // Module nodejs pour exécuter le fichier bash
       const testscript = exec('"./Ressources/recupDonnees.sh" -c '+userDatas[7][1]+','+userDatas[7][0]+':'+userDatas[7][3]+','+userDatas[7][2]); // Longitude et lattitude
       console.log("Téléchargement lancé?");
       testscript.stdout.on('data', function(data){
          //TODO: When Download is finished, call extract, then call delete
           console.log(""+data);
       });
-      testscript.stderr.on('data', function(data){
+      testscript.stderr.on('data', function(data){ // En cas d'erreur
           console.log(data);
       });
-      testscript.on('close', function(data){
+      testscript.on('close', function(data){ //Quand le téléchargement est fini
           console.log('end');
           socket.emit('dataDownloaded', 'Téléchargement terminé!');
       });
@@ -152,21 +146,19 @@ io.sockets.on('connection', function (socket) {
       var fs = require('fs');
       var parse = require('csv-parse');
       var myName = [];
-      fs.createReadStream("Ressources/product-list.csv")
+      fs.createReadStream("Ressources/product-list.csv") // Charge le csv contenant les noms des archives téléchargées
         .pipe(parse({delimiter: ','}))
         .on('data', function(csvrow) {
         myName.push(csvrow[0]);
       })
-      .on('end',function() {
-        //console.log("Finish get Copernicus package name : " + myName);
+      .on('end',function() { // Quand on a chargé le csv
         var Zip = require('adm-zip');
         for (var i = 0; i < myName.length; i++) {
-          if(fs.existsSync("Ressources/farmingData/"+myName[i]+".zip")){
+          if(fs.existsSync("Ressources/farmingData/"+myName[i]+".zip")){ // Si l'archive existe
             var myzip = new Zip("Ressources/farmingData/"+myName[i]+".zip");
-            //myzip.extractAllTo("farmingData/"+myName, true);
             /*  Extract Only IMG_DATA  */
             var zipEntries = myzip.getEntries();
-            zipEntries.forEach(function(zipEntry) {
+            zipEntries.forEach(function(zipEntry) { // On extrait chaque élément de IMG Data
               var myString = "IMG_DATA/";
               var position = zipEntry.entryName.indexOf(myString);
     		      if (position != -1) {
@@ -176,7 +168,7 @@ io.sockets.on('connection', function (socket) {
                 }
     		      }
     	      });
-            deleteFile('Ressources/farmingData/'+myName[i]+'.zip');
+            deleteFile('Ressources/farmingData/'+myName[i]+'.zip'); // On supprime l'archive
             console.log("Extraction of " + myName[i] + " is finished!");
             socket.emit('extractFinished', 'Extraction terminée!');
           }
@@ -197,11 +189,8 @@ io.sockets.on('connection', function (socket) {
     /*  Find images name to send them to pythonn script */
     socket.on('findImagesName', function(data){
       var fs = require('fs');
-      //name
       var dir = "./Ressources/farmingData/"+userDatas[0]+"_"+userDatas[1]+"_"+userDatas[2];
-      console.log(dir)
-      //GetImages
-      console.log("Je suis arrivé ici, c'est good!");
+      // Gestion des différents cas de précisions de Copernicus, de base on préfère le 10m, et sinon on regarde aux étapes supérieurs
         if(fs.existsSync(dir)){
           console.log("Coucou tout le monde!");
         }
@@ -233,6 +222,7 @@ io.sockets.on('connection', function (socket) {
           console.log(name4 + " and " + name8);
         }
 
+        // Execution du script Python
         var PythonShell = require('python-shell');
         console.log(xUtmFirst+' '+yUtmFirst+' '+xUtmSecond+' '+yUtmSecond);
         var options = {
@@ -289,4 +279,5 @@ function findNames(myString4, myString8, myPath, file){
   }
 }
 
+// Port sur lequel écoute le serveur, s'y connecter avec localhost:8080 dans votre navigateur
 server.listen(8080);
